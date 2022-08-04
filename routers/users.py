@@ -53,6 +53,16 @@ async def view_user_profile(
         .filter(models.Socials.follows_id == user_profile.id)
         .first()
     )
+    user_follows_count = (
+        db.query(models.Socials)
+        .filter(models.Socials.user_id == user_profile.id)
+        .count()
+    )
+    user_follower_count = (
+        db.query(models.Socials)
+        .filter(models.Socials.follows_id == user_profile.id)
+        .count()
+    )
 
     if user_follows is None:
         user_follows_flag = False
@@ -66,6 +76,8 @@ async def view_user_profile(
             "user": user,
             "user_profile": user_profile,
             "user_follows_flag": user_follows_flag,
+            "user_follows_count": user_follows_count,
+            "user_follower_count": user_follower_count,
         },
     )
 
