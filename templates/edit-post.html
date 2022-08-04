@@ -1,0 +1,17 @@
+{% include 'layout.html' %}
+
+<div class="container pt-3 pb-3">
+    <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #2f2f2f;">
+        <div class="card-body text-white">
+            <form method="POST" action="/posts/edit-post/{{post.id}}">
+                <div class=" form-group mb-3 mt-3">
+                    <label class="mb-3">Edit your post</label>
+                    <textarea name="post_body" class="form-control" rows="3" required>{{ post.post_body }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-outline-light mt-3">Save</button>
+                <button onclick="window.location.href='/posts/delete-post/{{post.id}}'" type="button"
+                    class="btn btn-outline-light mt-3 mx-3">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>

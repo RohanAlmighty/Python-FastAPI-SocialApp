@@ -1,0 +1,47 @@
+{% include 'layout.html' %}
+
+<div class="container pt-3 pb-3">
+  <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #2f2f2f;">
+    <div class="card-body text-white">
+      <span class="card-text" style="font-size: 1.25rem;">
+        Hello <a href="/users/{{user.username}}" style="color:#ffffff; text-decoration:none">@{{ user.username }}</a>
+      </span>
+      <a class="btn btn-outline-light float-end" href="create-post">Share Something</a>
+    </div>
+  </div>
+  {% for user_info in user_self %}
+  {% for post in posts_self %}
+  {% if post.owner_id == user_info.id %}
+  <div class="card mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #525252;">
+    <div class="card-header post-head text-white">
+      <a href="/users/{{user_info.username}}" style="color:#ffffff; text-decoration:none">{{ user_info.first_name }} {{
+        user_info.last_name }} @{{ user_info.username }}</a>
+    </div>
+    <div class="card-body text-white">
+      <p class="card-text">
+        {{ post.post_body }}
+        <button onclick="window.location.href='edit-post/{{post.id}}'" type="button"
+          class="btn btn-outline-light float-end">Edit</button>
+      </p>
+    </div>
+  </div>
+  {% endif %} {% endfor %} {% endfor %}
+  {% if user_follows_details and user_follows_posts %}
+  {% for user_item in user_follows_details %}
+  {% for post_item in user_follows_posts %}
+  {% for user_info in user_item %}
+  {% for post in post_item %}
+  {% if post.owner_id == user_info.id %}
+  <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #525252">
+    <div class="card-header post-head text-white">
+      <a href="/users/{{user_info.username}}" style="color:#ffffff; text-decoration:none">{{ user_info.first_name }} {{
+        user_info.last_name }} @{{ user_info.username }}</a>
+    </div>
+    <div class="card-body text-white">
+      <p class="card-text">
+        {{ post.post_body }}
+      </p>
+    </div>
+  </div>
+  {% endif %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endif %}
+</div>

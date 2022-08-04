@@ -1,0 +1,43 @@
+{% include 'layout.html' %}
+
+<div class="container pt-3 pb-3">
+    <div class="card mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; height: 35rem; background-color: #525252;">
+        <div class="card-body">
+            <div class="card mb-3 mt-3 mx-auto border-0" style="max-width: 30rem; background-color: #525252;">
+                <div class="card-body text-white text-center">
+                    <img src="https://img.icons8.com/color/96/000000/user.png" />
+                    <span class="card-text" style="font-size: 1.5rem;">
+                        @{{ user_profile.username }}
+                    </span>
+                    </br></br>
+                    {% if user.id == user_profile.id %}
+                    <form method="POST" action="#">
+                        <button type="submit" class="btn btn-outline-light" href="#">Edit</button>
+                    </form>
+                    {% elif user_follows_flag == True %}
+                    <form method="POST" action="/users/unfollow/{{user_profile.username}}">
+                        <button type="submit" class="btn btn-outline-light" href="#">Unfollow</button>
+                    </form>
+                    {% elif user_follows_flag == False %}
+                    <form method="POST" action="/users/follow/{{user_profile.username}}">
+                        <button type="submit" class="btn btn-outline-light" href="#">Follow</button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="card mb-3 mt-3 mx-auto border-0" style="max-width: 30rem; background-color: #525252;">
+                    <div class="card-body text-white">
+                        <span class="card-text" style="font-size: 1.2rem;">
+                            <p>Name : {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
+                            <p>Email : {{ user_profile.email }}</p>
+                            <p>Bio : {{ user_profile.bio }}</p>
+                            </br>
+                            <p>Following : 0</p>
+                            <p>Followers : 0</p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

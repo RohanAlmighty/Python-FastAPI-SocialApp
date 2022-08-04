@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-md navbar-dark py-1 gradient-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">SocialApp <span style="font-size: 10px;">by <i>RohanAlmighty</i></span></a>
+        {% if user %}
+        <button class="navbar-toggler" style="outline: none; box-shadow: none;" type=" button" data-bs-toggle="collapse"
+            data-bs-target="#navbarnav" aria-controls="navbarnav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarnav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item m-1">
+                    <a class="nav-link active" href="/">Home</a>
+                </li>
+                <li class="nav-item m-1">
+                    <a class="nav-link active" href="#">Change Password</a>
+                </li>
+                <li class="nav-item m-1">
+                    <a class="nav-link active" href="/auth/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</nav>
