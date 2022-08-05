@@ -1,0 +1,52 @@
+{% include 'layout.html' %}
+
+<div class="container pt-3 pb-3">
+    <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #2f2f2f;">
+        <div class="card-body text-white">
+            {% if msg %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{msg}}
+            </div>
+            {% endif %}
+            <form method="POST" action="/users/profile/edit">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group mb-3 mt-3">
+                            <label class="mb-2">Email</label>
+                            <input type="email" class="form-control" name="email" value="{{ user_profile.email}}"
+                                readonly>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group mb-3 mt-3">
+                            <label class="mb-2">Username</label>
+                            <input type="text" class="form-control" name="username" value="{{ user_profile.username}}"
+                                readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group mb-3 mt-3">
+                            <label class="mb-2">First Name</label>
+                            <input type="text" class="form-control" name="firstname"
+                                value="{{ user_profile.first_name}}" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group mb-3 mt-3">
+                            <label class="mb-2">Last Name</label>
+                            <input type="text" class="form-control" name="lastname" value="{{ user_profile.last_name}}"
+                                required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-3 mt-3">
+                    <label class="mb-2">Bio</label>
+                    <input type="text" class="form-control" name="bio" value="{{ user_profile.bio}}" required>
+                </div>
+                <button type="submit" class="btn btn-outline-light mt-3">Save</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -15,8 +15,8 @@
             </div>
             <div class="row mt-4 mb-4 text-center">
                 {% if user.id == user_profile.id %}
-                <form method="POST" action="#">
-                    <button type="submit" class="btn btn-outline-light" href="#">Edit</button>
+                <form>
+                    <a class="btn btn-outline-light" href="/users/profile/edit">Edit</a>
                 </form>
                 {% elif user_follows_flag == True %}
                 <form method="POST" action="/users/unfollow/{{user_profile.username}}">
