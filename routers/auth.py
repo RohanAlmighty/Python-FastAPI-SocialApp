@@ -213,3 +213,42 @@ async def register_user(
 
     msg = "User successfully created"
     return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+
+
+@router.get("/edit-password", response_class=HTMLResponse)
+async def edit_user_view(request: Request):
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
+
+    return templates.TemplateResponse(
+        "edit-user-password.html", {"request": request, "user": user}
+    )
+
+
+@router.post("/edit-password", response_class=HTMLResponse)
+async def user_password_change(
+    request: Request,
+    password: str = Form(...),
+    password2: str = Form(...),
+    db: Session = Depends(get_db),
+):
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
+
+    user_data = db.query(models.Users).filter(models.Users.id == user.get("id")).first()
+
+    msg = "Wrong password"
+
+    if user_data is not None:
+        if verify_password(password, user_data.hashed_password):
+            user_data.hashed_password = get_password_hash(password2)
+
+            db.add(user_data)
+            db.commit()
+            msg = "Password updated"
+
+    return templates.TemplateResponse(
+        "edit-user-password.html", {"request": request, "user": user, "msg": msg}
+    )
