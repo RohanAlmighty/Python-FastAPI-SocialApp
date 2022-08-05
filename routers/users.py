@@ -237,3 +237,22 @@ async def edit_profile_commit(
     db.commit()
 
     return RedirectResponse(url=f"/users/{username}", status_code=status.HTTP_302_FOUND)
+
+
+@router.get("/profile/my-profile", response_class=HTMLResponse)
+async def my_profile(request: Request, db: Session = Depends(get_db)):
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
+
+    user_profile = (
+        db.query(models.Users).filter(models.Users.id == user.get("id")).first()
+    )
+    if user_profile is None:
+        return RedirectResponse(
+            url="/auth/page-not-found", status_code=status.HTTP_302_FOUND
+        )
+
+    return RedirectResponse(
+        url=f"/users/{user_profile.username}", status_code=status.HTTP_302_FOUND
+    )
