@@ -22,10 +22,10 @@
     {% for user_info in search_result %}
     <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #525252">
         <div class="card-body text-white">
-            <p class="card-text">
+            <a href="/users/{{user_info.username}}" style="color:#ffffff; text-decoration:none" class="card-text">
                 {{ user_info.first_name }} {{ user_info.last_name }} @{{ user_info.username }}
-            </p>
-            <p class="card-text">
+            </a>
+            <p class="card-text mt-3">
                 {{ user_info.bio }}
             </p>
         </div>
