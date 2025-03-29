@@ -1,4 +1,12 @@
-from sqlalchemy import Boolean, Column, Integer, String, ForeignKey
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    DateTime,
+    func,
+)
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -25,6 +33,7 @@ class Posts(Base):
     id = Column(Integer, primary_key=True, index=True)
     post_body = Column(String)
     owner_id = Column(Integer, ForeignKey("users.id"))
+    updated_at = Column(DateTime, server_default=func.now())
 
     owner = relationship("Users", back_populates="posts")
 
