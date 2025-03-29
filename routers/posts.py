@@ -1,5 +1,5 @@
 from .auth import get_current_user
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from database import engine, SessionLocal
 import models
 from fastapi import Depends, APIRouter, Request, Form
@@ -17,7 +17,9 @@ sys.path.append("..")
 IST = timezone("Asia/Kolkata")
 
 router = APIRouter(
-    prefix="/posts", tags=["posts"], responses={404: {"description": "not found"}}
+    prefix="/posts",
+    tags=["posts"],
+    responses={404: {"description": "not found"}},
 )
 
 models.Base.metadata.create_all(bind=engine)
@@ -40,44 +42,35 @@ async def read_all_by_user(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
 
-    user_self = db.query(models.Users).filter(models.Users.id == user.get("id")).all()
-    posts_self = (
-        db.query(models.Posts).filter(models.Posts.owner_id == user.get("id")).order_by(models.Posts.updated_at.desc()).all()
-    )
-
-    user_follows = (
-        db.query(models.Socials).filter(models.Socials.user_id == user.get("id")).all()
-    )
-
-    user_follows_details = list()
-    user_follows_posts = list()
-
-    for users_followed in user_follows:
-        user_follows_details.append(
-            db.query(models.Users)
-            .filter(models.Users.id == users_followed.follows_id)
-            .all()
+    posts = (
+        db.query(models.Posts)
+        .options(joinedload(models.Posts.owner))
+        .filter(
+            (models.Posts.owner_id == user.get("id"))
+            | (
+                models.Posts.owner_id.in_(
+                    db.query(models.Socials.follows_id).filter(
+                        models.Socials.user_id == user.get("id")
+                    )
+                )
+            )
         )
-        user_follows_posts.append(
-            db.query(models.Posts)
-            .filter(models.Posts.owner_id == users_followed.follows_id)
-            .all()
-        )
+        .order_by(models.Posts.updated_at.desc())
+        .all()
+    )
 
     try:
-        for post in posts_self:
+        for post in posts:
             if post.updated_at.tzinfo is None:
                 post.updated_at = UTC.localize(post.updated_at)
-            post.updated_at = post.updated_at.astimezone(IST).strftime("%I:%M %p %d %b %Y")
+            post.updated_at = post.updated_at.astimezone(IST).strftime(
+                "%I:%M %p %d %b %Y"
+            )
         return templates.TemplateResponse(
             "home.html",
             {
                 "request": request,
-                "user_self": user_self,
-                "posts_self": posts_self,
-                "user_follows": user_follows,
-                "user_follows_details": user_follows_details,
-                "user_follows_posts": user_follows_posts,
+                "posts": posts,
                 "user": user,
             },
         )
@@ -86,8 +79,7 @@ async def read_all_by_user(request: Request, db: Session = Depends(get_db)):
             "home.html",
             {
                 "request": request,
-                "user_self": user_self,
-                "posts_self": posts_self,
+                "posts": posts,
                 "user": user,
             },
         )
@@ -126,7 +118,9 @@ async def create_post(
 
 
 @router.get("/edit-post/{post_id}", response_class=HTMLResponse)
-async def edit_post(request: Request, post_id: int, db: Session = Depends(get_db)):
+async def edit_post(
+    request: Request, post_id: int, db: Session = Depends(get_db)
+):
 
     user = await get_current_user(request)
     if user is None:
@@ -156,7 +150,9 @@ async def edit_post_commit(
     if user is None:
         return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
 
-    posts_model = db.query(models.Posts).filter(models.Posts.id == post_id).first()
+    posts_model = (
+        db.query(models.Posts).filter(models.Posts.id == post_id).first()
+    )
 
     posts_model.post_body = post_body
 

@@ -22,8 +22,7 @@
     </div>
   </div>
 
-  {% for user_info in user_self %} {% for post in posts_self %} {% if
-  post.owner_id == user_info.id %}
+  {% for post in posts %}
   <div class="card mb-3 mx-auto" style="max-width: 600px">
     <div class="card-body p-0">
       <div class="p-3">
@@ -34,20 +33,23 @@
           <div class="flex-grow-1">
             <div class="d-flex justify-content-between">
               <div>
-                <a href="/users/{{user_info.username}}" class="user-link"
-                  >{{ user_info.first_name }} {{ user_info.last_name }}</a
+                <a href="/users/{{post.owner.username}}" class="user-link"
+                  >{{ post.owner.first_name }} {{ post.owner.last_name }}</a
                 >
                 <span class="ms-1" style="color: var(--text-secondary)"
-                  >@{{ user_info.username }}</span
+                  >@{{ post.owner.username }}</span
                 >
               </div>
+              {% if post.owner.id == user.get("id") %}
               <button
                 onclick="window.location.href='edit-post/{{post.id}}'"
                 type="button"
                 class="btn btn-outline-primary btn-sm"
               >
-                <i class="fas fa-edit me-1"></i>Edit
+                <i class="fas fa-edit"></i>
+                <span class="d-none d-md-inline ms-1">Edit</span>
               </button>
+              {% endif %}
             </div>
             <p class="my-3">{{ post.post_body }}</p>
             <div class="timestamp">
@@ -58,37 +60,7 @@
       </div>
     </div>
   </div>
-  {% endif %} {% endfor %} {% endfor %} {% if user_follows_details and
-  user_follows_posts %} {% for user_item in user_follows_details %} {% for
-  post_item in user_follows_posts %} {% for user_info in user_item %} {% for
-  post in post_item %} {% if post.owner_id == user_info.id %}
-  <div class="card mb-3 mx-auto" style="max-width: 600px">
-    <div class="card-body p-0">
-      <div class="p-3">
-        <div class="d-flex">
-          <div class="avatar me-3">
-            <i class="fas fa-user"></i>
-          </div>
-          <div class="flex-grow-1">
-            <div>
-              <a href="/users/{{user_info.username}}" class="user-link"
-                >{{ user_info.first_name }} {{ user_info.last_name }}</a
-              >
-              <span class="ms-1" style="color: var(--text-secondary)"
-                >@{{ user_info.username }}</span
-              >
-            </div>
-            <p class="my-3">{{ post.post_body }}</p>
-            <div class="timestamp">
-              <i class="far fa-clock me-1"></i>{{ post.updated_at }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endif %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endif %} {% if
-  not user_self and not user_follows_details %}
+  {% endfor %} {% if not posts %}
   <div class="card text-center mb-3 mx-auto" style="max-width: 600px">
     <div class="card-body p-4">
       <i
