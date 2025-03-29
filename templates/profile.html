@@ -1,44 +1,86 @@
 {% include 'layout.html' %}
 
-<div class="container pt-3 pb-3">
-    <div class="card mb-3 mt-3 mx-auto border-0 text-white"
-        style="max-width: 50rem; height: 35rem; background-color: #525252;">
-        <div class="card-body">
-            <div class="row">
-                <img src="https://img.icons8.com/color/96/000000/user.png" style="max-width: 10rem;" class="mx-auto" />
-                <span class="card-text text-center" style="font-size: 1.5rem;">
-                    @{{ user_profile.username }}
-                </span>
-                <span class="card-text text-center" style="font-size: 1.2rem;">
-                    {{ user_profile.first_name }} {{ user_profile.last_name }}
-                </span>
-            </div>
-            <div class="row mt-4 mb-4 text-center">
-                {% if user.id == user_profile.id %}
-                <form>
-                    <a class="btn btn-outline-light" href="/users/profile/edit">Edit</a>
-                </form>
-                {% elif user_follows_flag == True %}
-                <form method="POST" action="/users/unfollow/{{user_profile.username}}">
-                    <button type="submit" class="btn btn-outline-light" href="#">Unfollow</button>
-                </form>
-                {% elif user_follows_flag == False %}
-                <form method="POST" action="/users/follow/{{user_profile.username}}">
-                    <button type="submit" class="btn btn-outline-light" href="#">Follow</button>
-                </form>
-                {% endif %}
-            </div>
-            <div class="row text-center">
-                <span class="card-text" style="font-size: 1.2rem;">
-                    <p>{{ user_profile.bio }}</p>
-                    <p>{{ user_profile.email }}</p>
-                    <p><b>{{ user_follower_count }}</b> followers</p>
-                    <p><b>{{ user_follows_count}}</b> following</p>
-                </span>
-            </div>
+<div class="container py-3">
+  <div
+    class="card mb-3 mx-auto"
+    style="
+      max-width: 600px;
+      border: none;
+      background-color: transparent;
+      box-shadow: none;
+    "
+  >
+    <div class="card-body p-0 text-center">
+      <div
+        class="avatar mx-auto mb-3"
+        style="width: 96px; height: 96px; background-color: var(--border-color)"
+      >
+        <i class="fas fa-user fa-3x" style="color: var(--bs-body-color)"></i>
+      </div>
+
+      <h4 class="mb-1">
+        {{ user_profile.first_name }} {{ user_profile.last_name }}
+      </h4>
+      <p class="text-muted mb-4">@{{ user_profile.username }}</p>
+
+      <div class="d-flex justify-content-center mb-4">
+        <div class="mx-4">
+          <h5>{{ user_follower_count }}</h5>
+          <p class="text-muted">Followers</p>
         </div>
+        <div class="mx-4">
+          <h5>{{ user_follows_count }}</h5>
+          <p class="text-muted">Following</p>
+        </div>
+      </div>
+
+      <div class="mb-4 p-3" style="background-color: transparent">
+        {% if user_profile.bio %}
+        <p>{{ user_profile.bio }}</p>
+        {% endif %} {% if user_profile.email %}
+        <p class="text-muted">{{ user_profile.email }}</p>
+        {% endif %}
+      </div>
+
+      <div class="mt-4">
+        {% if user.id == user_profile.id %}
+        <a
+          class="btn btn-outline-primary px-4"
+          href="/users/profile/edit"
+          style="border-radius: 9999px"
+        >
+          <i class="fas fa-edit me-1"></i>Edit Profile
+        </a>
+        {% elif user_follows_flag == True %}
+        <form
+          method="POST"
+          action="/users/unfollow/{{user_profile.username}}"
+          class="d-inline"
+        >
+          <button
+            type="submit"
+            class="btn btn-outline-primary px-4"
+            style="border-radius: 9999px"
+          >
+            <i class="fas fa-user-minus me-1"></i>Unfollow
+          </button>
+        </form>
+        {% elif user_follows_flag == False %}
+        <form
+          method="POST"
+          action="/users/follow/{{user_profile.username}}"
+          class="d-inline"
+        >
+          <button
+            type="submit"
+            class="btn btn-primary px-4"
+            style="border-radius: 9999px"
+          >
+            <i class="fas fa-user-plus me-1"></i>Follow
+          </button>
+        </form>
+        {% endif %}
+      </div>
     </div>
-</div>
-</div>
-</div>
+  </div>
 </div>

@@ -1,52 +1,90 @@
 {% include 'layout.html' %}
 
-<div class="container pt-3 pb-3">
-    <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #2f2f2f;">
-        <div class="card-body text-white">
-            {% if msg %}
-            <div class="alert alert-danger text-center" role="alert">
-                {{msg}}
-            </div>
-            {% endif %}
-            <form method="POST" action="/users/profile/edit">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group mb-3 mt-3">
-                            <label class="mb-2">Email</label>
-                            <input type="email" class="form-control" name="email" value="{{ user_profile.email}}"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group mb-3 mt-3">
-                            <label class="mb-2">Username</label>
-                            <input type="text" class="form-control" name="username" value="{{ user_profile.username}}"
-                                readonly>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group mb-3 mt-3">
-                            <label class="mb-2">First Name</label>
-                            <input type="text" class="form-control" name="firstname"
-                                value="{{ user_profile.first_name}}" required>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group mb-3 mt-3">
-                            <label class="mb-2">Last Name</label>
-                            <input type="text" class="form-control" name="lastname" value="{{ user_profile.last_name}}"
-                                required>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group mb-3 mt-3">
-                    <label class="mb-2">Bio</label>
-                    <input type="text" class="form-control" name="bio" value="{{ user_profile.bio}}" required>
-                </div>
-                <button type="submit" class="btn btn-outline-light mt-3">Save</button>
-            </form>
-        </div>
+<div class="container py-3">
+  <div class="mx-auto" style="max-width: 600px">
+    <h4 class="text-center mb-4">Edit Profile</h4>
+
+    {% if msg %}
+    <div
+      class="alert alert-danger text-center mb-4"
+      role="alert"
+      style="max-width: 600px; margin: 0 auto"
+    >
+      {{ msg }}
     </div>
+    {% endif %}
+
+    <form method="POST" action="/users/profile/edit" class="mt-4">
+      <div class="row mb-3">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <label class="form-label">First Name</label>
+          <input
+            type="text"
+            class="form-control bg-transparent"
+            name="firstname"
+            value="{{ user_profile.first_name }}"
+            required
+            style="border: 1px solid var(--border-color)"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Last Name</label>
+          <input
+            type="text"
+            class="form-control bg-transparent"
+            name="lastname"
+            value="{{ user_profile.last_name }}"
+            required
+            style="border: 1px solid var(--border-color)"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control bg-transparent"
+          name="email"
+          value="{{ user_profile.email }}"
+          readonly
+          style="border: 1px solid var(--border-color); opacity: 0.7"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input
+          type="text"
+          class="form-control bg-transparent"
+          name="username"
+          value="{{ user_profile.username }}"
+          readonly
+          style="border: 1px solid var(--border-color); opacity: 0.7"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label">Bio</label>
+        <textarea
+          class="form-control bg-transparent"
+          name="bio"
+          rows="3"
+          style="border: 1px solid var(--border-color)"
+        >
+{{ user_profile.bio }}</textarea
+        >
+      </div>
+
+      <div class="d-grid">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="border-radius: 9999px"
+        >
+          <i class="fas fa-save me-2"></i>Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

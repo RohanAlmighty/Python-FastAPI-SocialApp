@@ -1,29 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <link id="favicon" rel="icon" type="image/x-icon" href="{{ url_for('static', path='/socialapp/img/favicon.ico') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/socialapp/css/base.css') }}" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <link
+      id="favicon"
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', path='/socialapp/img/favicon.ico') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', path='/socialapp/css/base.css') }}"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width-device=width, initial-scale=1, shrink-to-fit=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <title>SocialApp</title>
-</head>
+    <style>
+      :root {
+        /* Dark Mode Colors with Grey Accent */
+        --dark-bg: #000000;
+        --dark-card-bg: #16181c;
+        --dark-border: #2f3336;
+        --dark-text: #e7e9ea;
+        --dark-text-secondary: #71767b;
+        --dark-accent: #6e767d;
+        --dark-hover: #080808;
 
-<body style="background-color: #2f2f2f;">
+        /* Light Mode Colors with Grey Accent */
+        --light-bg: #ffffff;
+        --light-card-bg: #f7f9f9;
+        --light-border: #eff3f4;
+        --light-text: #0f1419;
+        --light-text-secondary: #536471;
+        --light-accent: #6e767d;
+        --light-hover: #f7f7f7;
+      }
 
-    {% include 'navbar.html' %}
+      [data-bs-theme="dark"] {
+        --bs-body-bg: var(--dark-bg);
+        --bs-body-color: var(--dark-text);
+        --card-bg: var(--dark-card-bg);
+        --border-color: var(--dark-border);
+        --text-secondary: var(--dark-text-secondary);
+        --accent-color: var(--dark-accent);
+        --hover-bg: var(--dark-hover);
+      }
 
-    {% block content %}
+      [data-bs-theme="light"] {
+        --bs-body-bg: var(--light-bg);
+        --bs-body-color: var(--light-text);
+        --card-bg: var(--light-card-bg);
+        --border-color: var(--light-border);
+        --text-secondary: var(--light-text-secondary);
+        --accent-color: var(--light-accent);
+        --hover-bg: var(--light-hover);
+      }
 
-    {% endblock %}
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      /* 3D card effect */
+      .card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        background-color: var(--accent-color);
+        border: none;
+        font-weight: 700;
+        border-radius: 9999px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--accent-color);
+        opacity: 0.9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+      }
+
+      .btn-outline-primary {
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+        border-radius: 9999px;
+        font-weight: 600;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-outline-primary:hover {
+        background-color: rgba(110, 118, 125, 0.1);
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+      }
+
+      .nav-link {
+        color: var(--bs-body-color);
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .nav-link:hover {
+        color: var(--accent-color);
+        transform: translateY(-1px);
+      }
+
+      .post-head {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1rem;
+      }
+
+      .user-link {
+        color: var(--bs-body-color);
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .user-link:hover {
+        text-decoration: underline;
+      }
+
+      .timestamp {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-top: 16px; /* Added more space between post body and timestamp */
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--border-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .bg-navbar {
+        backdrop-filter: blur(10px);
+        background-color: rgba(0, 0, 0, 0.75);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      [data-bs-theme="light"] .bg-navbar {
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .theme-toggle {
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease;
+      }
+
+      .theme-toggle:hover {
+        background-color: var(--hover-bg);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+      }
+
+      /* Add slight depth to buttons */
+      .btn {
+        transition: all 0.2s ease;
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+
+  <body>
+    {% include 'navbar.html' %} {% block content %} {% endblock %}
 
     <script src="https://kit.fontawesome.com/c2d543862b.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Theme switching functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const themeToggle = document.getElementById("theme-toggle");
+        const htmlElement = document.documentElement;
+        const currentTheme = localStorage.getItem("theme") || "dark";
 
-</body>
+        // Set initial theme
+        htmlElement.setAttribute("data-bs-theme", currentTheme);
+        updateThemeIcon(currentTheme);
 
+        // Theme toggle click handler
+        themeToggle.addEventListener("click", function () {
+          const currentTheme = htmlElement.getAttribute("data-bs-theme");
+          const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+          htmlElement.setAttribute("data-bs-theme", newTheme);
+          localStorage.setItem("theme", newTheme);
+          updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+          const iconElement = themeToggle.querySelector("i");
+          if (theme === "dark") {
+            iconElement.className = "fas fa-sun";
+          } else {
+            iconElement.className = "fas fa-moon";
+          }
+        }
+      });
+    </script>
+  </body>
 </html>

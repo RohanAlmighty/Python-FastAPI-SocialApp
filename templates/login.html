@@ -1,33 +1,55 @@
 {% include 'layout.html' %}
 
-<div class="container pt-3 pb-3">
-    <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #2f2f2f;">
-        <div class="card-body text-white">
+<div class="container py-3">
+  <div class="mx-auto" style="max-width: 600px">
+    <h4 class="text-center mb-4">Welcome back</h4>
 
-            {% if msg %}
-            {% if msg == 'Logout Successful' or msg == 'User successfully created' %}
-            <div class="alert alert-success mx-auto text-center" role="alert" style="max-width: 25rem;">
-                {{msg}}
-            </div>
-            {% else %}
-            <div class="alert alert-danger mx-auto text-center" role="alert" style="max-width: 25rem;">
-                {{msg}}
-            </div>
-            {% endif %}
-            {% endif %}
-
-            <form method="POST" action="/auth">
-                <div class="form-group mb-3 mt-3 mx-auto">
-                    <label class="mb-2">Username</label>
-                    <input type="text" class="form-control" name="email" required>
-                </div>
-                <div class="form-group mb-3 mt-3 mx-auto">
-                    <label class="mb-2">Password</label>
-                    <input type="password" class="form-control" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-outline-light mt-3">Login</button>
-                <a class="btn btn-outline-light mt-3 mx-3" href="register">Sign Up</a>
-            </form>
-        </div>
+    {% if msg %}
+    <div
+      class="alert alert-{{ 'success' if msg in ['Logout Successful', 'User successfully created'] else 'danger' }} text-center mb-4"
+      role="alert"
+      style="max-width: 600px; margin: 0 auto"
+    >
+      {{ msg }}
     </div>
+    {% endif %}
+
+    <form method="POST" action="/auth" class="mt-4">
+      <div class="mb-3">
+        <label class="form-label">Username or Email</label>
+        <input
+          type="text"
+          class="form-control bg-transparent"
+          name="email"
+          required
+          style="border: 1px solid var(--border-color)"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control bg-transparent"
+          name="password"
+          required
+          style="border: 1px solid var(--border-color)"
+        />
+      </div>
+      <div class="d-grid mb-3">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="border-radius: 9999px"
+        >
+          <i class="fas fa-sign-in-alt me-2"></i>Login
+        </button>
+      </div>
+      <div class="text-center">
+        <p class="mb-0">
+          Don't have an account?
+          <a href="/auth/register" class="text-decoration-none">Sign up</a>
+        </p>
+      </div>
+    </form>
+  </div>
 </div>
