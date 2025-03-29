@@ -30,6 +30,7 @@ pyparsing==3.2.1
 python-dotenv==1.0.1
 python-jose==3.4.0
 python-multipart==0.0.20
+pytz==2025.2
 rsa==4.9
 six==1.17.0
 sniffio==1.3.1
