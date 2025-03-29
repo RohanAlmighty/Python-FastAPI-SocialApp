@@ -1,64 +1,108 @@
 {% include 'layout.html' %}
 
-<div class="container pt-3 pb-3">
-  <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #2f2f2f;">
-    <div class="card-body text-white">
-      <div class="row">
+<div class="container py-3">
+  <div class="card mb-3 mx-auto" style="max-width: 600px">
+    <div class="card-body p-3">
+      <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
-          <div class="col">
-            <span class="card-text" style="font-size: 1.25rem;">
-              Hello <a href="/users/{{user.username}}" style="color:#ffffff; text-decoration:none">@{{ user.username
-                }}</a>
-            </span>
+          <div class="avatar me-3">
+            <i class="fas fa-user"></i>
           </div>
-          <div class="col">
-            <a class="btn btn-outline-light float-end" href="create-post">Post</a>
+          <span>
+            Hello,
+            <a href="/users/{{user.username}}" class="user-link"
+              >@{{ user.username }}</a
+            >
+          </span>
+        </div>
+        <a class="btn btn-primary px-4" href="create-post">
+          <i class="fas fa-feather-alt me-2"></i>Post
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {% for user_info in user_self %} {% for post in posts_self %} {% if
+  post.owner_id == user_info.id %}
+  <div class="card mb-3 mx-auto" style="max-width: 600px">
+    <div class="card-body p-0">
+      <div class="p-3">
+        <div class="d-flex">
+          <div class="avatar me-3">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between">
+              <div>
+                <a href="/users/{{user_info.username}}" class="user-link"
+                  >{{ user_info.first_name }} {{ user_info.last_name }}</a
+                >
+                <span class="ms-1" style="color: var(--text-secondary)"
+                  >@{{ user_info.username }}</span
+                >
+              </div>
+              <button
+                onclick="window.location.href='edit-post/{{post.id}}'"
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+              >
+                <i class="fas fa-edit me-1"></i>Edit
+              </button>
+            </div>
+            <p class="my-3">{{ post.post_body }}</p>
+            <div class="timestamp">
+              <i class="far fa-clock me-1"></i>{{ post.updated_at }}
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  {% for user_info in user_self %}
-  {% for post in posts_self %}
-  {% if post.owner_id == user_info.id %}
-  <div class="card mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #525252;">
-    <div class="card-header post-head text-white">
-      <a href="/users/{{user_info.username}}" style="color:#ffffff; text-decoration:none">{{ user_info.first_name }} {{
-        user_info.last_name }} @{{ user_info.username }}</a>
-    </div>
-    <div class="card-body text-white">
-      <div class="row">
-        <div class="d-flex align-items-center">
-          <div class="col-9">
-            <p class="card-text">
-              {{ post.post_body }}
-            </p>
+  {% endif %} {% endfor %} {% endfor %} {% if user_follows_details and
+  user_follows_posts %} {% for user_item in user_follows_details %} {% for
+  post_item in user_follows_posts %} {% for user_info in user_item %} {% for
+  post in post_item %} {% if post.owner_id == user_info.id %}
+  <div class="card mb-3 mx-auto" style="max-width: 600px">
+    <div class="card-body p-0">
+      <div class="p-3">
+        <div class="d-flex">
+          <div class="avatar me-3">
+            <i class="fas fa-user"></i>
           </div>
-          <div class="col-3">
-            <button onclick="window.location.href='edit-post/{{post.id}}'" type="button"
-              class="btn btn-outline-light float-end pt-0 pb-0">Edit</button>
+          <div class="flex-grow-1">
+            <div>
+              <a href="/users/{{user_info.username}}" class="user-link"
+                >{{ user_info.first_name }} {{ user_info.last_name }}</a
+              >
+              <span class="ms-1" style="color: var(--text-secondary)"
+                >@{{ user_info.username }}</span
+              >
+            </div>
+            <p class="my-3">{{ post.post_body }}</p>
+            <div class="timestamp">
+              <i class="far fa-clock me-1"></i>{{ post.updated_at }}
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  {% endif %} {% endfor %} {% endfor %}
-  {% if user_follows_details and user_follows_posts %}
-  {% for user_item in user_follows_details %}
-  {% for post_item in user_follows_posts %}
-  {% for user_info in user_item %}
-  {% for post in post_item %}
-  {% if post.owner_id == user_info.id %}
-  <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #525252">
-    <div class="card-header post-head text-white">
-      <a href="/users/{{user_info.username}}" style="color:#ffffff; text-decoration:none">{{ user_info.first_name }} {{
-        user_info.last_name }} @{{ user_info.username }}</a>
-    </div>
-    <div class="card-body text-white">
-      <p class="card-text">
-        {{ post.post_body }}
+  {% endif %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endif %} {% if
+  not user_self and not user_follows_details %}
+  <div class="card text-center mb-3 mx-auto" style="max-width: 600px">
+    <div class="card-body p-4">
+      <i
+        class="fas fa-feather-alt fa-3x mb-3"
+        style="color: var(--accent-color)"
+      ></i>
+      <h4>Welcome to SocialApp</h4>
+      <p style="color: var(--text-secondary)">
+        Your timeline is empty. Start following people or share your first post!
       </p>
+      <a href="create-post" class="btn btn-primary mt-2"
+        >Create your first post</a
+      >
     </div>
   </div>
-  {% endif %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endif %}
+  {% endif %}
 </div>

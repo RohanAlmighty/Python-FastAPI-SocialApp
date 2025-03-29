@@ -1,30 +1,108 @@
-<nav class="navbar navbar-expand-md navbar-dark py-1 gradient-custom">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">SocialApp <span style="font-size: 10px;">by <i>RohanAlmighty</i></span></a>
-        {% if user %}
-        <button class="navbar-toggler" style="outline: none; box-shadow: none;" type=" button" data-bs-toggle="collapse"
-            data-bs-target="#navbarnav" aria-controls="navbarnav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarnav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item m-1">
-                    <a class="nav-link active" href="/">Home</a>
-                </li>
-                <li class="nav-item m-1">
-                    <a class="nav-link active" href="/search">Search</a>
-                </li>
-                <li class="nav-item m-1">
-                    <a class="nav-link active" href="/users/profile/my-profile">My Profile</a>
-                </li>
-                <li class="nav-item m-1">
-                    <a class="nav-link active" href="/users/password/edit">Change Password</a>
-                </li>
-                <li class="nav-item m-1">
-                    <a class="nav-link active" href="/auth/logout">Logout</a>
-                </li>
-            </ul>
-        </div>
-        {% endif %}
+<nav class="navbar navbar-expand-md sticky-top py-2 bg-navbar">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <i class="fas fa-hashtag me-2"></i>
+      <span class="fw-bold">SocialApp</span>
+      <span class="ms-2 badge text-bg-secondary" style="font-size: 10px"
+        >by <i>RohanAlmighty</i></span
+      >
+    </a>
+    {% if user %}
+    <button
+      class="navbar-toggler border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarnav"
+      aria-controls="navbarnav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarnav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+        <li class="nav-item mx-1">
+          <a class="nav-link d-flex align-items-center" href="/">
+            <i class="fas fa-home me-2"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li class="nav-item mx-1">
+          <a class="nav-link d-flex align-items-center" href="/search">
+            <i class="fas fa-search me-2"></i>
+            <span>Search</span>
+          </a>
+        </li>
+        <li class="nav-item mx-1">
+          <a
+            class="nav-link d-flex align-items-center"
+            href="/users/profile/my-profile"
+          >
+            <i class="fas fa-user me-2"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        <li class="nav-item mx-1">
+          <a
+            class="nav-link d-flex align-items-center"
+            href="/users/password/edit"
+          >
+            <i class="fas fa-lock me-2"></i>
+            <span>Password</span>
+          </a>
+        </li>
+        <li class="nav-item mx-1">
+          <a class="nav-link d-flex align-items-center" href="/auth/logout">
+            <i class="fas fa-sign-out-alt me-2"></i>
+            <span>Logout</span>
+          </a>
+        </li>
+        <li class="nav-item ms-2">
+          <div
+            id="theme-toggle"
+            class="theme-toggle d-flex align-items-center justify-content-center"
+          >
+            <i class="fas fa-sun"></i>
+          </div>
+        </li>
+      </ul>
     </div>
+    {% else %}
+    <button
+      class="navbar-toggler border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarnav"
+      aria-controls="navbarnav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarnav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+        <li class="nav-item mx-1">
+          <a class="nav-link d-flex align-items-center" href="/auth">
+            <i class="fas fa-lock me-2"></i>
+            <span>Login</span>
+          </a>
+        </li>
+        <li class="nav-item mx-1">
+          <a class="nav-link d-flex align-items-center" href="/auth/register">
+            <i class="fas fa-sign-out-alt me-2"></i>
+            <span>Sign up</span>
+          </a>
+        </li>
+        <li class="nav-item ms-2">
+          <div
+            id="theme-toggle"
+            class="theme-toggle d-flex align-items-center justify-content-center"
+          >
+            <i class="fas fa-sun"></i>
+          </div>
+        </li>
+      </ul>
+    </div>
+    {% endif %}
+  </div>
 </nav>

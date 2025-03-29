@@ -1,34 +1,54 @@
 {% include 'layout.html' %}
 
-<div class="container pt-3 pb-3">
-    <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #2f2f2f;">
-        <div class="card-body text-white">
-            <form method="POST" action="/search">
-                <div class="row">
-                    <div class="d-flex align-items-center">
-                        <div class="col-8">
-                            <input type="search" name="search" class="form-control rounded"
-                                placeholder="Search for users" required />
-                        </div>
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-outline-light mx-3" href="">Search</a>
-                        </div>
-                    </div>
-                </div>
-            </form>
+<div class="container py-3">
+  <div class="card mb-3 mx-auto" style="max-width: 600px">
+    <div class="card-body p-3">
+      <form method="POST" action="/search">
+        <div class="input-group">
+          <input
+            type="search"
+            name="search"
+            class="form-control"
+            placeholder="Search for users..."
+            style="
+              background-color: var(--card-bg);
+              border: 1px solid var(--border-color);
+              color: var(--bs-body-color);
+              border-radius: 9999px;
+              padding: 8px 16px;
+            "
+            required
+          />
+          <button
+            type="submit"
+            class="btn btn-primary ms-2"
+            style="border-radius: 9999px"
+          >
+            <i class="fas fa-search me-1"></i> Search
+          </button>
         </div>
+      </form>
     </div>
-    {% if search_result %}
-    {% for user_info in search_result %}
-    <div class="card text-dark mb-3 mt-3 mx-auto border-0" style="max-width: 50rem; background-color: #525252">
-        <div class="card-body text-white">
-            <a href="/users/{{user_info.username}}" style="color:#ffffff; text-decoration:none" class="card-text">
-                {{ user_info.first_name }} {{ user_info.last_name }} @{{ user_info.username }}
-            </a>
-            <p class="card-text mt-3">
-                {{ user_info.bio }}
-            </p>
+  </div>
+
+  {% if search_result %} {% for user_info in search_result %}
+  <div class="card mb-3 mx-auto" style="max-width: 600px">
+    <div class="card-body p-3">
+      <div class="d-flex align-items-center">
+        <div class="avatar me-3">
+          <i class="fas fa-user"></i>
         </div>
+        <div>
+          <a href="/users/{{user_info.username}}" class="user-link">
+            {{ user_info.first_name }} {{ user_info.last_name }}
+            <span class="text-muted">@{{ user_info.username }}</span>
+          </a>
+          {% if user_info.bio %}
+          <p class="mt-2 mb-0">{{ user_info.bio }}</p>
+          {% endif %}
+        </div>
+      </div>
     </div>
-    {% endfor %}{% endif %}
+  </div>
+  {% endfor %} {% endif %}
 </div>
