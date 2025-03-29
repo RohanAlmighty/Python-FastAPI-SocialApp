@@ -1,4 +1,5 @@
 from .auth import get_current_user
+from sqlalchemy import or_, func
 from sqlalchemy.orm import Session
 from database import engine, SessionLocal
 import models
@@ -15,7 +16,9 @@ sys.path.append("..")
 
 
 router = APIRouter(
-    prefix="/search", tags=["search"], responses={404: {"description": "not found"}}
+    prefix="/search",
+    tags=["search"],
+    responses={404: {"description": "not found"}},
 )
 
 models.Base.metadata.create_all(bind=engine)
@@ -53,11 +56,15 @@ async def search_user(
     if user is None:
         return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
 
+    search = search.lower()
     search_result = (
         db.query(models.Users)
         .filter(
-            models.Users.username.like("%" + search + "%")
-            | models.Users.first_name.like("%" + search + "%")
+            or_(
+                func.lower(models.Users.username).contains(search),
+                func.lower(models.Users.first_name).contains(search),
+                func.lower(models.Users.last_name).contains(search),
+            )
         )
         .all()
     )
