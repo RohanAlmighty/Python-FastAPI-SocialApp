@@ -8,11 +8,13 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from starlette.responses import RedirectResponse
 from starlette import status
+from pytz import timezone, UTC
 
 import sys
 
 sys.path.append("..")
 
+IST = timezone("Asia/Kolkata")
 
 router = APIRouter(
     prefix="/posts", tags=["posts"], responses={404: {"description": "not found"}}
@@ -40,7 +42,7 @@ async def read_all_by_user(request: Request, db: Session = Depends(get_db)):
 
     user_self = db.query(models.Users).filter(models.Users.id == user.get("id")).all()
     posts_self = (
-        db.query(models.Posts).filter(models.Posts.owner_id == user.get("id")).all()
+        db.query(models.Posts).filter(models.Posts.owner_id == user.get("id")).order_by(models.Posts.updated_at.desc()).all()
     )
 
     user_follows = (
@@ -63,6 +65,10 @@ async def read_all_by_user(request: Request, db: Session = Depends(get_db)):
         )
 
     try:
+        for post in posts_self:
+            if post.updated_at.tzinfo is None:
+                post.updated_at = UTC.localize(post.updated_at)
+            post.updated_at = post.updated_at.astimezone(IST).strftime("%I:%M %p %d %b %Y")
         return templates.TemplateResponse(
             "home.html",
             {
