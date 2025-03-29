@@ -3,3 +3,4 @@ env.py
 __pycache__/*
 routers/__pycache__/*
 *.db
+.vscode/
